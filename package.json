@@ -1,12 +1,12 @@
 {
-    "name": "recaptcha-solver",
-    "version": "0.2.10",
+    "name": "google-recaptcha-solver",
+    "version": "0.1.1",
     "description": "Solve reCAPTCHA challenges by using offline speech recognition.",
     "keywords": [
         "reCAPTCHA",
         "playwright"
     ],
-    "author": "JacobLinCool <jacoblincool@gmail.com> (https://github.com/JacobLinCool)",
+    "author": "tocha688 <tocha688@gmail.com> (https://github.com/tocha688)",
     "license": "MIT",
     "main": "lib/index.js",
     "module": "lib/index.mjs",
@@ -47,12 +47,12 @@
         "wav": "^1.0.2",
         "yauzl": "^2.10.0"
     },
-    "homepage": "https://github.com/JacobLinCool/recaptcha-solver#readme",
+    "homepage": "https://github.com/tocha688/recaptcha-solver/tree/recaptcha-fast-solver",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/JacobLinCool/recaptcha-solver.git"
+        "url": "git+https://github.com/tocha688/recaptcha-solver.git"
     },
     "bugs": {
-        "url": "https://github.com/JacobLinCool/recaptcha-solver/issues"
+        "url": "https://github.com/tocha688/recaptcha-solver/issues"
     }
 }
