@@ -53,7 +53,7 @@ export async function solve(
 
     // if bframe is not loaded, manually load it by clicking the button in main frame.
     if (bframe_loaded === false) {
-        await page.waitForSelector(MAIN_FRAME, { state: "attached" });
+        await page.waitForSelector(MAIN_FRAME, { state: "attached", timeout: wait });
 
         const iframe = await page.$(MAIN_FRAME);
         if (iframe === null) {
@@ -213,7 +213,7 @@ function reconize(dir: string): Promise<string> {
                 if (end_of_speech) {
                     const result = rec
                         .result()
-                        .alternatives.sort((a:any, b:any) => b.confidence - a.confidence)[0].text;
+                        .alternatives.sort((a: any, b: any) => b.confidence - a.confidence)[0].text;
                     stream.close(() => resolve(result));
                 }
             }
