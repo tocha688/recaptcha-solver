@@ -4,6 +4,7 @@ const path = require("node:path");
 const os = require("node:os");
 const https = require("https");
 const yauzl = require("yauzl");
+const Downloader = require("nodejs-file-downloader");
 
 const VERBOSE = true;
 const URL = "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip";
@@ -18,65 +19,15 @@ const MODEL_DIR = path.resolve(__dirname, "..", "model");
         VERBOSE && console.log("Model already downloaded");
         return;
     }
-
-    const zip = path.resolve(__dirname, path.basename(URL));
-    if(!fs.existsSync(zip)){
-        await download(URL, zip);
-        VERBOSE && console.log("Downloaded model to", zip);
-    }
-
-    await unzip(zip, MODEL_DIR);
-    // fs.unlinkSync(zip);
-})();
-
-/**
- * Download the model and extract it to the correct location.
- * @param {string} url The url of the model to download
- * @param {string} to The path to save the model to
- * @param {number} redirect The number of redirects to follow
- * @returns {Promise<string>} The path to the model
- */
-function download(url, to, redirect = 0) {
-    if (redirect === 0) {
-        VERBOSE && console.log(`Downloading ${url} to ${to}`);
-    } else {
-        VERBOSE && console.log(`Redirecting to ${url}`);
-    }
-
-    return new Promise((resolve, reject) => {
-        if (!fs.existsSync(path.dirname(to))) {
-            fs.mkdirSync(path.dirname(to), { recursive: true });
-        }
-
-        let done = true;
-        const file = fs.createWriteStream(to);
-        const request = https.get(url, (res) => {
-            if (res.statusCode === 302 && res.headers.location !== undefined) {
-                done = false;
-                file.close();
-                resolve(download(res.headers.location, to, redirect + 1));
-                return;
-            }
-            res.pipe(file);
-        });
-
-        file.on("finish", () => {
-            if (done) {
-                resolve(to);
-            }
-        });
-
-        request.on("error", (err) => {
-            fs.unlink(to, () => reject(err));
-        });
-
-        file.on("error", (err) => {
-            fs.unlink(to, () => reject(err));
-        });
-
-        request.end();
+    const downloader = new Downloader({
+        url: URL,
+        directory: MODEL_DIR
     });
-}
+    const { filePath } = await downloader.download();
+    VERBOSE && console.log("Downloaded model to", MODEL_DIR);
+    await unzip(filePath, MODEL_DIR);
+    fs.unlinkSync(filePath)
+})();
 
 function unzip(zip, dest) {
     const dir = path.basename(zip, ".zip");
