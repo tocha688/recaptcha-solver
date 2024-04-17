@@ -19,7 +19,7 @@ const MODEL_DIR = path.resolve(__dirname, "..", "model");
         return;
     }
 
-    const zip = path.resolve(os.tmpdir(), path.basename(URL));
+    const zip = path.resolve(__dirname, path.basename(URL));
     await download(URL, zip);
     VERBOSE && console.log("Downloaded model to", zip);
 
