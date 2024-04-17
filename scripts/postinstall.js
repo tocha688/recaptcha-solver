@@ -20,11 +20,13 @@ const MODEL_DIR = path.resolve(__dirname, "..", "model");
     }
 
     const zip = path.resolve(__dirname, path.basename(URL));
-    await download(URL, zip);
-    VERBOSE && console.log("Downloaded model to", zip);
+    if(!fs.existsSync(zip)){
+        await download(URL, zip);
+        VERBOSE && console.log("Downloaded model to", zip);
+    }
 
     await unzip(zip, MODEL_DIR);
-    fs.unlinkSync(zip);
+    // fs.unlinkSync(zip);
 })();
 
 /**
